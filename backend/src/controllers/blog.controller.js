@@ -34,4 +34,4 @@ async function createBlogController(req, res) {
     }
 };
 
-module.exports = createBlogController ;
+module.exports = {createBlogController} ;
