@@ -29,9 +29,28 @@ async function createBlogController(req, res) {
     } catch (error) {
         return res.status(500).json({
             message : "internal server error",
-            error: message.error
+            error: error.message
         })
     }
 };
 
-module.exports = {createBlogController} ;
+async function getBlogController(req, res) {
+    try {
+        let blogs = await blogModel.find()
+        if(blogs.length === 0){
+            return res.status(404).json({
+                message : "blogs not found"
+            })
+        }
+        res.status(200).json({
+            message : "blog fetched successfully",
+            blogs : blogs
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "internal server error",
+        })
+    }
+};
+
+module.exports = {createBlogController , getBlogController} ;
