@@ -4,5 +4,6 @@ const blogController = require("../controllers/blog.controller")
 
 router.post("/",blogController.createBlogController);
 router.get("/",blogController.getBlogController);
+router.get("/:id", blogController.getSingleBlogController)
 
 module.exports = router ;
