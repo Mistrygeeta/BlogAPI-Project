@@ -77,4 +77,35 @@ async function getSingleBlogController(req,res) {
     }
 }
 
-module.exports = {createBlogController , getBlogController, getSingleBlogController} ;
+async function updateBlogController(req, res) {
+    try {
+        let {id} = req.params;
+
+        let {title,author, content} = req.body;
+
+        if(!title || !author|| !content){
+            return res.status(422).json({
+                message: " All field are required for update!"
+            })
+        };
+
+        let updateBlogs = await blogModel.findByIdAndUpdate(id,{title,author,content},{ new: true, runValidators: true });
+
+        if(!updateBlogs){
+            return res.status(404).json({
+                message : "blogs not found"
+            })
+        };
+
+        return res.status(200).json({
+            message: "blog update successfully",
+            Blog : updateBlogs
+        });
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "internal server error"
+        })
+    }
+}
+module.exports = {createBlogController , getBlogController, getSingleBlogController,updateBlogController} ;
