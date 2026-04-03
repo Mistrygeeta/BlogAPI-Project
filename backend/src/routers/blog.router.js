@@ -6,5 +6,6 @@ router.post("/",blogController.createBlogController);
 router.get("/",blogController.getBlogController);
 router.get("/:id", blogController.getSingleBlogController);
 router.put("/:id",blogController.updateBlogController);
+router.patch("/:id",blogController.updatePartialBlogController);
 
 module.exports = router ;

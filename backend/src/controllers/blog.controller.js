@@ -107,5 +107,29 @@ async function updateBlogController(req, res) {
             message: "internal server error"
         })
     }
-}
-module.exports = {createBlogController , getBlogController, getSingleBlogController,updateBlogController} ;
+};
+
+async function updatePartialBlogController(req, res) {
+    try {
+        let {id} = req.params;
+
+        let updateBlog = await blogModel.findByIdAndUpdate(id, req.body, {new: true, runValidators: true});
+
+        if(!updateBlog){
+            return res.status(404).json({
+                message: "blog not found!"
+            })
+        };
+
+        return res.status(200).json({
+          message:  "blog updated successfully",
+            blog : updateBlog
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message:"internal server error"
+        })
+    }
+};
+module.exports = {createBlogController , getBlogController, getSingleBlogController,updateBlogController,updatePartialBlogController} ;
