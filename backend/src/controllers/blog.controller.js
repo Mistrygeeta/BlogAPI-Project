@@ -23,7 +23,7 @@ async function createBlogController(req, res) {
     };
 
     return res.status(201).json({
-        message: "blog created succesfully",
+        message: "blog created successfully",
         Blog : newBlog
     })
     } catch (error) {
@@ -44,7 +44,7 @@ async function getBlogController(req, res) {
         }
         res.status(200).json({
             message : "blog fetched successfully",
-            Blogs : blogs
+            blogs : blogs
         })
     } catch (error) {
         return res.status(500).json({
@@ -99,7 +99,7 @@ async function updateBlogController(req, res) {
 
         return res.status(200).json({
             message: "blog update successfully",
-            Blog : updateBlogs
+            blog : updateBlogs
         });
     } catch (error) {
         console.log(error)
@@ -132,4 +132,29 @@ async function updatePartialBlogController(req, res) {
         })
     }
 };
-module.exports = {createBlogController , getBlogController, getSingleBlogController,updateBlogController,updatePartialBlogController} ;
+
+async function deleteBlogController(req, res) {
+    try {
+        let {id} = req.params;
+
+        let deleteBlog = await blogModel.findByIdAndDelete(id);
+        if(!deleteBlog){
+            return res.status(404).json({
+                message : "blog not found"
+            })
+        };
+
+        return res.status(200).json({
+            message : "blog deleted successfully",
+            blog : deleteBlog
+        });
+    } catch (error) {
+        console.log("error in delete blog:", error)
+        return res.status(500).json({
+            message : "internal server error",
+            error : error.message
+        })
+    }
+}
+module.exports = {createBlogController , getBlogController, getSingleBlogController,
+    updateBlogController,updatePartialBlogController,deleteBlogController};
