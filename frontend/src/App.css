@@ -24,11 +24,21 @@ body{
   box-shadow: 0 0 10px grey;
 }
 
-input, textarea{
+h2{
+  text-align: center;
+  font-size: 30px;
+}
+input{
 width: 100%;
 padding: 10px;
 margin: 10px 0;
 }
+
+textarea{
+  width: 100%;
+  padding:0 2px 80px;
+}
+
 
 button{
   padding: 10px 20px;

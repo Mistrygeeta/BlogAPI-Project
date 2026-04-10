@@ -1,18 +1,30 @@
 import React, { useState } from 'react'
-import "./App.css"
+import './App.css'
 
 const App = () => {
-  const [title, setTitle] = useState("");
+
+  const [form, setForm] = useState({
+    title: "",
+    author :"",
+    content : ""
+  });
+
+  const handleChange = (e)=>{
+    setForm({
+      ...form,
+      [e.target.name] : e.target.value
+    })
+  };
+
   return (
     <div className='container'>
-      <h2>Create Blog</h2>
+      <h2>My Blog</h2>
 
-      <input placeholder='Enter Title' value={title} 
-      onChange={(e)=> setTitle(e.target.value)} />
+      <input name='title' placeholder='Enter title' onChange={handleChange} />
+      <input name='author' placeholder='Enter author' onChange={handleChange} />
+      <textarea name="content" placeholder='Eneter content...' onChange={handleChange}></textarea>
 
-      <button>Create</button>
-
-      <p>Title : {title}</p>
+      <button>Create blog</button>
     </div>
   )
 }
