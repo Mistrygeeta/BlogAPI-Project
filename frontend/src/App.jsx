@@ -41,14 +41,16 @@ const App = () => {
 
   return (
     <div className='container'>
-      <h2>My Blog</h2>
+      <div className='form-section'>     
+       <h2>My Blog</h2>
 
       <input name='title' value= {form.title}  placeholder='Enter title' onChange={handleChange} />
       <input name='author' value= {form.author} placeholder='Enter author' onChange={handleChange} /> <br />
-      <textarea name="content" value= {form.content} placeholder='Eneter content...' onChange={handleChange}></textarea>
+      <textarea name="content" value= {form.content} placeholder='Enter content...' onChange={handleChange}></textarea>
 
       <button onClick={createBlog}>Create blog</button>
-      <hr />
+      </div>
+      <div className='blog-section'>
       <h3>All Blogs</h3>
       {blogs.map((blog)=>(
         <div key={blog.id} className='card'>
@@ -59,6 +61,7 @@ const App = () => {
           <button onClick={()=> deleteBlog(blog.id)}>DELETE</button>
         </div>
       ))}
+      </div>
     </div>
   )
 }
