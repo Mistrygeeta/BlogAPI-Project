@@ -27,6 +27,11 @@ const App = () => {
     })
   };
 
+  const deleteBlog = (id)=>{
+    const upadatedBlogs = blogs.filter((blog)=>blog.id !== id);
+    setBlogs(upadatedBlogs)
+  };
+
   const handleChange = (e)=>{
     setForm({
       ...form,
@@ -50,6 +55,8 @@ const App = () => {
           <h4>{blog.title}</h4>
           <h5>{blog.author}</h5>
           <p>{blog.content}</p>
+
+          <button onClick={()=> deleteBlog(blog.id)}>DELETE</button>
         </div>
       ))}
     </div>
