@@ -6,12 +6,14 @@ const App = () => {
   const [form, setForm] = useState({
     title: "",
     author :"",
-    content : ""
+    content :""
   });
 
   const [blogs, setBlogs] = useState([]);
 
   const [expandedId, setExpandedId] = useState(null)
+
+  const [editId, setEditId] = useState(null)
 
   const createBlog = ()=>{
     const newBlog = {
@@ -34,6 +36,20 @@ const App = () => {
     setBlogs(upadatedBlogs)
   };
 
+  const updateBlog = ()=>{
+    const updateBlogs = blogs.map((blog)=> blog.id === editId ? {...blog , ...form} : blog)
+
+    setBlogs(updateBlogs);
+
+    setForm({
+      title : "",
+      author: "",
+      content: ""
+    })
+
+    setEditId(null);
+  };
+
 
   const toggleReadMore =(id)=>{
     setExpandedId(expandedId === id ? null : id)
@@ -46,16 +62,27 @@ const App = () => {
     })
   };
 
+  const editBlog = (blog)=>{
+
+    setForm({
+      title : blog.title,
+      author : blog.author,
+      content : blog.content
+    });
+
+    setEditId(blog.id);
+  }
+
   return (
     <div className='container'>
       <div className='form-section'>     
-       <h2>My Blog</h2>
+       <h2>{editId ? "Edit Blog" : "My Blog"}</h2>
 
       <input name='title' value= {form.title}  placeholder='Enter title' onChange={handleChange} />
       <input name='author' value= {form.author} placeholder='Enter author' onChange={handleChange} /> <br />
       <textarea name="content" value= {form.content} placeholder='Enter content...' onChange={handleChange}></textarea>
 
-      <button onClick={createBlog}>Create blog</button>
+      <button onClick={editId? updateBlog : createBlog}>{editId ? "Update Blog" : "Create Blog"}</button>
       </div>
       <div className='blog-section'>
       <h3>All Blogs</h3>
@@ -73,7 +100,10 @@ const App = () => {
                 </span>
               )}
               </p>
-          <button onClick={()=> deleteBlog(blog.id)}>DELETE</button>
+          <div className="btn-group">
+            <button className="edit-btn" onClick={() => editBlog(blog)}>EDIT</button>
+            <button className="delete-btn" onClick={() => deleteBlog(blog.id)}>DELETE</button>
+            </div>
         </div>
       ))}
       </div>

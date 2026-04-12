@@ -118,13 +118,40 @@ h3{
 .full {
   display: block;
 }
-.card > button{
-  background: red;
+
+.btn-group{
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+.edit-btn {
+  background-color: #4caf50;
   color: white;
-  margin: 5px 0;
-  padding: 8px;
+  padding: 4px 10px; 
+  margin: 0; 
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;
 }
 
-.card button:hover {
+.edit-btn:hover {
+  background-color: #388e3c;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  padding: 4px 8px;   
+  margin: 0;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: auto;  
+}
+
+.delete-btn:hover {
   background-color: darkred;
 }
