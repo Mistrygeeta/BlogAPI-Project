@@ -11,6 +11,8 @@ const App = () => {
 
   const [blogs, setBlogs] = useState([]);
 
+  const [expandedId, setExpandedId] = useState(null)
+
   const createBlog = ()=>{
     const newBlog = {
       id : Date.now(),
@@ -30,6 +32,11 @@ const App = () => {
   const deleteBlog = (id)=>{
     const upadatedBlogs = blogs.filter((blog)=>blog.id !== id);
     setBlogs(upadatedBlogs)
+  };
+
+
+  const toggleReadMore =(id)=>{
+    setExpandedId(expandedId === id ? null : id)
   };
 
   const handleChange = (e)=>{
@@ -56,8 +63,16 @@ const App = () => {
         <div key={blog.id} className='card'>
           <h4>{blog.title}</h4>
           <h5>{blog.author}</h5>
-          <p>{blog.content}</p>
-
+          <p className={expandedId === blog.id ? "full" : "short"}>
+             {expandedId === blog.id ? blog.content : blog.content.substring(0, 200)}
+             {blog.content.length > 200 && expandedId !== blog.id && "..."}
+             
+             {blog.content.length > 200 && (
+              <span className="read-more" onClick={() => toggleReadMore(blog.id)}>
+                {expandedId === blog.id ? "Show less" : "Read more"}
+                </span>
+              )}
+              </p>
           <button onClick={()=> deleteBlog(blog.id)}>DELETE</button>
         </div>
       ))}
