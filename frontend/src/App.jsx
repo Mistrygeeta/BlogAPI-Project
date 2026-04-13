@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 
 const App = () => {
@@ -9,7 +9,14 @@ const App = () => {
     content :""
   });
 
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState(()=>{
+    const savedBlogs =  localStorage.getItem("blogs");
+    return savedBlogs ? JSON.parse(savedBlogs) : []
+  });
+
+  useEffect(()=>{
+    localStorage.setItem("blogs", JSON.stringify(blogs))
+  },[blogs])
 
   const [expandedId, setExpandedId] = useState(null)
 
