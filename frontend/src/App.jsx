@@ -1,6 +1,7 @@
+import axios from "axios"
 import React, { useEffect, useState } from 'react'
 import './App.css'
-
+const API = "http://localhost:3000/api/blog"
 const App = () => {
 
   const [form, setForm] = useState({
@@ -8,53 +9,65 @@ const App = () => {
     author :"",
     content :""
   });
-
-  const [blogs, setBlogs] = useState(()=>{
-    const savedBlogs =  localStorage.getItem("blogs");
-    return savedBlogs ? JSON.parse(savedBlogs) : []
-  });
+  
+  const [blogs, setBlogs] = useState([])
 
   useEffect(()=>{
-    localStorage.setItem("blogs", JSON.stringify(blogs))
-  },[blogs])
+    fetchBlogs();
+  },[]);
+
+  const fetchBlogs = async()=>{
+    try {
+      const res = await axios.get(API);
+      setBlogs(res.data.blogs)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const [expandedId, setExpandedId] = useState(null)
 
   const [editId, setEditId] = useState(null)
 
-  const createBlog = ()=>{
-    const newBlog = {
-      id : Date.now(),
-      ...form
+  const handleSubmit = async()=>{
+    try {
+      if(editId){
+        const res = await axios.put(`${API}/${editId}`, form)
+        const updatedBlogs = blogs.map((b)=>
+           b._id === editId ? res.data.blog  : b
+      )
+      console.log(res.data)
+      setBlogs(updatedBlogs);
+      setEditId(null);
+
+      setForm({
+        title: "",
+        author: "",
+        content: ""
+      });
+      }else{
+        const res = await axios.post(API, form);
+        setBlogs([...blogs, res.data.blog]);
+        console.log(res.data)
+        setForm({
+          title: "",
+          author: "",
+          content: "",
+        })
+      };
+    } catch (error) {
+      console.log(error)
     }
-    setBlogs([
-      ...blogs,
-      newBlog
-    ])
-    setForm({
-      title :"",
-      author:"",
-      content:""
-    })
   };
 
-  const deleteBlog = (id)=>{
-    const upadatedBlogs = blogs.filter((blog)=>blog.id !== id);
-    setBlogs(upadatedBlogs)
-  };
-
-  const updateBlog = ()=>{
-    const updateBlogs = blogs.map((blog)=> blog.id === editId ? {...blog , ...form} : blog)
-
-    setBlogs(updateBlogs);
-
-    setForm({
-      title : "",
-      author: "",
-      content: ""
-    })
-
-    setEditId(null);
+  const deleteBlog = async(id)=>{
+    try {
+      const res= await axios.delete(`${API}/${id}`);
+       setBlogs(blogs.filter((blog)=> blog._id !== id));
+       console.log(res.data)
+    } catch (err) {
+      console.log(err)
+    }
   };
 
 
@@ -77,7 +90,7 @@ const App = () => {
       content : blog.content
     });
 
-    setEditId(blog.id);
+    setEditId(blog._id);
   }
 
   return (
@@ -89,27 +102,27 @@ const App = () => {
       <input name='author' value= {form.author} placeholder='Enter author' onChange={handleChange} /> <br />
       <textarea name="content" value= {form.content} placeholder='Enter content...' onChange={handleChange}></textarea>
 
-      <button onClick={editId? updateBlog : createBlog}>{editId ? "Update Blog" : "Create Blog"}</button>
+      <button onClick={handleSubmit}>{editId ? "Update Blog" : "Create Blog"}</button>
       </div>
       <div className='blog-section'>
       <h3>All Blogs</h3>
       {blogs.map((blog)=>(
-        <div key={blog.id} className='card'>
+        <div key={blog._id} className='card'>
           <h4>{blog.title}</h4>
           <h5>{blog.author}</h5>
-          <p className={expandedId === blog.id ? "full" : "short"}>
-             {expandedId === blog.id ? blog.content : blog.content.substring(0, 200)}
-             {blog.content.length > 200 && expandedId !== blog.id && "..."}
+          <p className={expandedId === blog._id ? "full" : "short"}>
+             {expandedId === blog._id ? blog.content : blog.content.substring(0, 200)}
+             {blog.content.length > 200 && expandedId !== blog._id && "..."}
              
              {blog.content.length > 200 && (
-              <span className="read-more" onClick={() => toggleReadMore(blog.id)}>
-                {expandedId === blog.id ? "Show less" : "Read more"}
+              <span className="read-more" onClick={() => toggleReadMore(blog._id)}>
+                {expandedId === blog._id ? "Show less" : "Read more"}
                 </span>
               )}
               </p>
           <div className="btn-group">
             <button className="edit-btn" onClick={() => editBlog(blog)}>EDIT</button>
-            <button className="delete-btn" onClick={() => deleteBlog(blog.id)}>DELETE</button>
+            <button className="delete-btn" onClick={() => deleteBlog(blog._id)}>DELETE</button>
             </div>
         </div>
       ))}
