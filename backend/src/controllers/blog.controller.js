@@ -24,7 +24,7 @@ async function createBlogController(req, res) {
 
     return res.status(201).json({
         message: "blog created successfully",
-        Blog : newBlog
+        blog : newBlog
     })
     } catch (error) {
         return res.status(500).json({
@@ -67,7 +67,7 @@ async function getSingleBlogController(req,res) {
 
         return res.status(200).json({
             message: "blog fetched successfully",
-            Blog: blog
+            blog: blog
         })
     } catch (error) {
         return res.status(500).json({
