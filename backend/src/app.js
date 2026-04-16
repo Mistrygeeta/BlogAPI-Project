@@ -4,7 +4,7 @@ const blogRouter = require("./routers/blog.router")
 const app = express();
 
 app.use(cors({
-    origin: "*",
+    origin: "http://localhost:5173",
     methods: ["GET","POST","PUT","PATCH","DELETE"],
     credentials: true
 }));
