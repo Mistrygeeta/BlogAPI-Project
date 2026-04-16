@@ -9,6 +9,10 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+
+app.get("/", (req, res) => {
+  res.send("Blog API is running 🚀");
+});
 app.use("/api/blog",blogRouter)
 
 module.exports = app;
