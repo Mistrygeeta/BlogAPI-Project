@@ -1,7 +1,7 @@
 import axios from "axios"
 import React, { useEffect, useState } from 'react'
 import './App.css'
-const API = "http://localhost:3000/api/blog"
+const API = "https://blogapi-project-ys9a.onrender.com/api/blog"
 const App = () => {
 
   const [form, setForm] = useState({
