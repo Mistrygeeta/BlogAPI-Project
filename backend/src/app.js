@@ -11,7 +11,7 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("Blog API is running 🚀");
+  res.send("Blog API is running");
 });
 app.use("/api/blog",blogRouter)
 
